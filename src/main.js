@@ -13,11 +13,15 @@ import router from './components/router';
 import './bus';
 import currencyFilter from './components/filters/currency';
 import dateFilter from './components/filters/date';
+// eslint-disable-next-line import/order
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
 Vue.use(VeeValidate);
+Vue.component('Loading', Loading);
 
 Vue.filter('currency', currencyFilter);
 Vue.filter('date', dateFilter);

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loading :active.sync="isLoading"></Loading>
     <div class="text-right">
       <button class="btn btn-primary" @click="openCouponModal(true)">
         建立新的優惠券
@@ -25,9 +26,12 @@
             <span class="text-muted" v-else>未起用</span>
           </td>
           <td>
-            <button class="btn btn-outline-primary btn-sm"
+            <button class="btn btn-outline-primary btn-sm m-1"
             @click="openCouponModal(false, item)"
             >編輯</button>
+            <button class="btn btn-outline-danger btn-sm"
+            @click="deleteCoupon(item)"
+            >刪除</button>
           </td>
         </tr>
       </tbody>
@@ -94,6 +98,7 @@ export default {
     return {
       coupons: [],
       isNew: false,
+      isLoading: false,
       tempCoupon: {
         title: '',
         is_enabled: 0,
@@ -115,7 +120,9 @@ export default {
     getCoupon() {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons`;
       const vm = this;
+      vm.isLoading = true;
       this.$http.get(api).then((response) => {
+        vm.isLoading = false;
         vm.coupons = response.data.coupons;
       });
     },
@@ -133,13 +140,13 @@ export default {
       let api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
       let httpMethod = 'post';
       const vm = this;
+      vm.isLoading = true;
       if (!vm.isNew) {
         api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempProduct.id}`;
         httpMethod = 'put';
       }
       this.$http[httpMethod](api, { data: vm.tempCoupon })
         .then((response) => {
-          console.log(response.data);
           if (response.data.success) {
             $('#couponModal').modal('hide');
             vm.getCoupon();
@@ -149,6 +156,18 @@ export default {
             console.log('新增失敗');
           }
         });
+    },
+    deleteCoupon(item) {
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${item.id}`;
+      console.log(item.id);
+      this.isLoading = true;
+      this.$http.delete(api).then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          this.isLoading = false;
+          this.getCoupon();
+        }
+      });
     },
   },
   created() {

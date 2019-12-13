@@ -27,7 +27,7 @@
             <span v-if="item.is_enable" class="text-success">啟用</span>
             <span v-else>未啟用</span>
           </td>
-          <td class="d-flex">
+          <td class="d-flex justify-content-between">
               <button class="btn btn-outline-primary btn-sm"
                 @click="openModal(false, item)">編輯</button>
               <button class="btn btn-outline-danger btn-sm"

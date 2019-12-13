@@ -178,12 +178,8 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
 import $ from 'jquery';
 
-Vue.component('Loading', Loading);
 
 export default {
   name: 'CoustomerOlders',
@@ -301,6 +297,16 @@ export default {
           console.log('欄位不完整');
         }
       });
+    },
+    openModal(isNew, item) {
+      if (isNew) {
+        this.tempProduct = {};
+        this.isNew = true;
+      } else {
+        this.tempProduct = { ...item };
+        this.isNew = false;
+      }
+      $('#ShopCartModal').modal('show');
     },
   },
   created() {
