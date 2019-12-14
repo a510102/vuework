@@ -43,7 +43,7 @@
                 px-3 mt-4 mb-1
                 text-muted"
               >
-              <span>模擬功能</span>
+              <span>Shop</span>
               <a class="d-flex align-items-center text-muted" href="#">
                 <span data-feather="plus-circle"></span>
               </a>

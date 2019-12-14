@@ -1,6 +1,10 @@
 <template>
   <div>
     <Loading :active.sync="isLoading"></Loading>
+    <button type="button" class="btn btn-primary float-right"
+            data-toggle="modal" data-target="#shopCartModal">
+      shopCart
+    </button>
     <div class="row mt-4">
       <div class="col-md-4 mb-4"
         v-for="(item ,key) in products"
@@ -83,7 +87,7 @@
         </div>
       </div>
     </div>
-    <div class="my-5 row justify-content-center">
+    <!-- <div class="my-5 row justify-content-center">
       <div class="my-5 row justify-content-center">
         <table class="table">
           <thead>
@@ -172,6 +176,75 @@
             <button class="btn btn-danger">送出訂單</button>
           </div>
         </form>
+      </div>
+    </div> -->
+    <div class="modal fade" id="shopCartModal" tabindex="-1"
+        role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Shop Cart</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="my-5">
+              <table class="table">
+                <thead>
+                  <th></th>
+                  <th>品名</th>
+                  <th>數量</th>
+                  <th>單價</th>
+                </thead>
+                <tbody>
+                  <tr v-for="item in cart.carts" :key="item.id">
+                    <td class="align-middle">
+                      <button type="button" class="btn btn-outline-danger btn-sm"
+                        @click="deleteCart(item.id)"
+                      >
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                    </td>
+                    <td class="align-middle">
+                      {{ item.product.title }}
+                      <div class="text-success" v-if="item.coupon">
+                        已套用優惠券
+                      </div>
+                    </td>
+                    <td class="align-middle">{{ item.qty }}/{{ item.product.unit }}</td>
+                    <td class="align-middle text-right">{{ item.final_total }}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3" class="text-right">總計</td>
+                    <td class="text-right">{{ cart.total }}</td>
+                  </tr>
+                  <tr v-if="cart.final_total !== cart.total">
+                    <td colspan="3" class="text-right text-success">折扣價</td>
+                    <td class="text-right text-success">{{ cart.final_total }}</td>
+                  </tr>
+                </tfoot>
+              </table>
+              <!-- <div class="input-group mb-3 input-group-sm">
+                <input type="text" class="form-control"
+                v-model="coupon_code" placeholder="請輸入優惠碼">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button"
+                    @click="addCouponCode"
+                  >
+                    套用優惠碼
+                  </button>
+                </div>
+              </div>-->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" @click="gotoCheckOut">結帳</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -307,6 +380,14 @@ export default {
         this.isNew = false;
       }
       $('#ShopCartModal').modal('show');
+    },
+    gotoCheckOut() {
+      console.log(this.cart);
+      if (this.cart.carts.length > 0) {
+        this.$router.push('/coustmer_check');
+      } else {
+        console.log('你還沒購物');
+      }
     },
   },
   created() {

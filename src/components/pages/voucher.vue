@@ -127,11 +127,12 @@ export default {
       });
     },
     openCouponModal(isNew, item) {
+      console.log(item, isNew);
       if (isNew) {
-        this.tempProduct = {};
+        this.tempCoupon = {};
         this.isNew = true;
       } else {
-        this.tempProduct = { ...item };
+        this.tempCoupon = { ...item };
         this.isNew = false;
       }
       $('#couponModal').modal('show');

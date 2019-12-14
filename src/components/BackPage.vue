@@ -4,7 +4,7 @@
     <Alert />
     <div class="container-fluid">
       <div class="row">
-        <SiderbarShop></SiderbarShop>
+        <Siderbar></Siderbar>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
           <router-view></router-view>
         </main>
@@ -15,14 +15,14 @@
 
 <script>
 import Navbar from './Navbar.vue';
-import SiderbarShop from './SidebarShop.vue';
+import Siderbar from './Siderbar.vue';
 import Alert from '@/components/AlertMessage.vue';
 
 export default {
   name: 'Dashboard',
   components: {
     Navbar,
-    SiderbarShop,
+    Siderbar,
     Alert,
   },
 };

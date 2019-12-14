@@ -53,6 +53,9 @@
         <div class="text-right" v-if="order.is_paid === false">
           <button class="btn btn-danger">確認付款去</button>
         </div>
+        <div class="text-right">
+          <button class="btn btn-danger" @click="homePage">回首頁</button>
+        </div>
       </form>
     </div>
   </div>
@@ -84,6 +87,9 @@ export default {
         console.log(response);
         vm.getOrder();
       });
+    },
+    homePage() {
+      this.$router.push('/coustmer_olders');
     },
   },
   created() {
