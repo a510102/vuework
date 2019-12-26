@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div class="d-flex justify-content-around w-50 m-auto">
+        <div class="badge badge-pill p-2">確認商品</div>
+        <div class="badge badge-pill p-2" :class="{'badge-success' : !order.is_paid}">進入金流系統</div>
+        <div class="badge badge-pill p-2" :class="{'badge-success' : order.is_paid}">付款成功</div>
+      </div>
     <div class="my-5 row justify-content-center">
       <form class="col-md-6" @submit.prevent="payOrder">
         <table class="table">

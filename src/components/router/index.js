@@ -9,6 +9,9 @@ import Voucher from '@/components/pages/voucher.vue';
 import CoustomerOrders from '@/components/pages/CoustomerOlders.vue';
 import CoustermersCheckout from '@/components/pages/CustomersCheckout.vue';
 import CheckOut from '@/components/pages/CheckOut.vue';
+import OrderProduct from '@/components/pages/OrderProduct.vue';
+import Home from '@/components/Home.vue';
+
 
 Vue.use(VueRouter);
 
@@ -16,7 +19,7 @@ export default new VueRouter({
   routes: [
     {
       path: '*',
-      redirect: '/login',
+      redirect: '/coustmer_olders',
     },
     {
       path: '/login',
@@ -52,11 +55,22 @@ export default new VueRouter({
       path: '/',
       name: 'Dashboard',
       component: Dashboard,
+      redirect: '/home',
       children: [
         {
           path: 'coustmer_olders',
           name: 'CoustmerOlders',
           component: CoustomerOrders,
+        },
+        {
+          path: 'home',
+          name: 'Home',
+          component: Home,
+        },
+        {
+          path: 'coustmer_olders/:id',
+          name: 'OrderProduct',
+          component: OrderProduct,
         },
         {
           path: 'coustmer_check',

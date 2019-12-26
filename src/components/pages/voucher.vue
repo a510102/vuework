@@ -41,7 +41,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="exampleModalLabel">優惠卷</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -143,18 +143,19 @@ export default {
       const vm = this;
       vm.isLoading = true;
       if (!vm.isNew) {
-        api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempProduct.id}`;
+        api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`;
         httpMethod = 'put';
       }
       this.$http[httpMethod](api, { data: vm.tempCoupon })
         .then((response) => {
           if (response.data.success) {
             $('#couponModal').modal('hide');
+            this.$bus.$emit('message:push', response.data.message, 'success');
             vm.getCoupon();
           } else {
             $('#couponModal').modal('hide');
             vm.getCoupon();
-            console.log('新增失敗');
+            this.$bus.$emit('message:push', response.data.message, 'danger');
           }
         });
     },

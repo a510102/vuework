@@ -30,7 +30,7 @@
       </tbody>
     </table>
     <Pagination :pagination= "pagination"
-                v-on:changepages="getProducts"/>
+                v-on:changepages="getProducts" />
   </div>
 </template>
 
@@ -41,7 +41,6 @@ export default {
   data() {
     return {
       orders: {},
-      isNew: false,
       pagination: {
         has_pre: false,
         has_next: false,

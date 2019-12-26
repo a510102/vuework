@@ -40,7 +40,7 @@ export default {
             vm.messages.splice(i, 1);
           }
         });
-      }, 5000);
+      }, 2000);
     },
   },
   created() {

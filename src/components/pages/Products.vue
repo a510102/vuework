@@ -24,7 +24,7 @@
             {{ item.price | currency }}
           </td>
           <td>
-            <span v-if="item.is_enable" class="text-success">啟用</span>
+            <span v-if="item.is_enabled" class="text-success">啟用</span>
             <span v-else>未啟用</span>
           </td>
           <td class="d-flex justify-content-between">
@@ -176,10 +176,10 @@ export default {
       const vm = this;
       vm.isLoading = true;
       this.$http.get(api).then((response) => {
-        console.log(response);
         vm.isLoading = false;
         vm.products = response.data.products;
         vm.pagination = response.data.pagination;
+        console.log(vm.products);
       });
     },
     openModal(isNew, item) {
@@ -196,13 +196,15 @@ export default {
       let api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`;
       let httpMethod = 'post';
       const vm = this;
+      vm.isLoading = true;
       if (!vm.isNew) {
         api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProduct.id}`;
         httpMethod = 'put';
       }
       this.$http[httpMethod](api, { data: vm.tempProduct })
         .then((response) => {
-          console.log(response.data);
+          console.log(response);
+          vm.isLoading = false;
           if (response.data.success) {
             $('#productModal').modal('hide');
             vm.getProducts();

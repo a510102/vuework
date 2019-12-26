@@ -1,7 +1,14 @@
 <template>
-  <div>
-    <div class="my-5 row justify-content-center">
-      <div class="my-5 row justify-content-center">
+  <div class="container my-3">
+    <Loading :active.sync="isLoading"></Loading>
+    <div class="d-flex justify-content-around">
+        <div class="badge badge-pill p-2"
+        :class="{'badge-success': this.$route.name === 'CheckOut'}">確認商品</div>
+        <div class="badge badge-pill p-2">進入金流系統</div>
+        <div class="badge badge-pill p-2">付款成功</div>
+      </div>
+    <div class="row mt-3">
+      <div class="col-md-6">
         <table class="table">
           <thead>
             <th></th>
@@ -39,7 +46,7 @@
             </tr>
           </tfoot>
         </table>
-        <div class="input-group mb-3 input-group-sm">
+        <div class="input-group input-group-sm mb-3">
           <input type="text" class="form-control" v-model="coupon_code" placeholder="請輸入優惠碼">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button"
@@ -49,7 +56,8 @@
             </button>
           </div>
         </div>
-        <form class="col-md-6" @submit.prevent="createOrder">
+      </div>
+      <form class="col-md-6" @submit.prevent="createOrder">
           <div class="form-group">
             <label for="useremail">Email</label>
             <input type="email" class="form-control" name="email" id="useremail"
@@ -89,7 +97,6 @@
             <button class="btn btn-danger">送出訂單</button>
           </div>
         </form>
-      </div>
     </div>
   </div>
 </template>
@@ -110,6 +117,7 @@ export default {
         },
         message: '',
       },
+      isLoading: false,
     };
   },
   methods: {
@@ -133,26 +141,32 @@ export default {
     addCouponCode() {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_CUSTOMPATH}/coupon`;
       const vm = this;
+      vm.isLoading = true;
       const coupon = {
         code: vm.coupon_code,
       };
       this.$http.post(api, { data: coupon }).then((response) => {
-        console.log(response);
-        vm.getCart();
-        vm.status.loadingItem = '';
+        if (response.data.success) {
+          vm.isLoading = false;
+          this.$bus.$emit('message:push', response.data.message, 'success');
+          vm.getCart();
+        } else {
+          vm.isLoading = false;
+          this.$bus.$emit('message:push', response.data.message, 'danger');
+        }
       });
     },
     createOrder() {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_CUSTOMPATH}/order`;
       const vm = this;
       const order = vm.form;
-      // vm.isLoading = true;
+      vm.isLoading = true;
       this.$validator.validate().then((valid) => {
         if (valid) {
           // do stuff if not valid.
           this.$http.post(api, { data: order }).then((response) => {
-            console.log('訂單已完成', response);
             if (response.data.success) {
+              vm.isLoading = true;
               vm.$router.push(`/coustmer_checkout/${response.data.orderId}`);
             }
           });
